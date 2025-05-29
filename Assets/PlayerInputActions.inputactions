@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "b2ccb65c-127b-4bfe-b30b-67a16aaad2ae",
+            "actions": [
+                {
+                    "name": "ToggleFlashlight",
+                    "type": "Button",
+                    "id": "da4ed74d-ade9-4183-8216-5cd5df16ace1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4160fb8f-91eb-4e63-bfe1-557fd45f5a65",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleFlashlight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

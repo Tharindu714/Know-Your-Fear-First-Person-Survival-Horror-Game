@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
+  m_Name: Entrance Letter
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6286968308125701631, guid: 95d8113477c428d4f95aec09fa0ec020, type: 3}
+  type: 0
+  description: "Please consider forgiving me... I am loosing it.. we all are.. Please
+    don\u2019t come here by any chance.. I mean it... Please !!! I leave this letter
+    at the entrance... If you are reading this.. We all are fucked... There is no
+    coming back for us... After reading this just turn back and run fast from this
+    place... \n\nI LOVE YOU SON !!!... Forgive me If I do something fucked in your
+    life"
+  StoreKnowledgeValue: 8.34

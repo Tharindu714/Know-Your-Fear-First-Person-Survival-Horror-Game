@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
+  m_Name: Winston House Letter
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8020110953586204702, guid: 4f9a9f66013fd5444846152c71991567, type: 3}
+  type: 0
+  description: "Payment in full: 12 souls.\n I promised quick returns\u2014no questions
+    asked.\nThey never came back.\nThe first night, I heard them clawing at the windows.\n
+    By the third, the forest whispered their names.\nNow, I see them. Pale. Hollow.
+    Waiting.\nI warned the others, but greed is deaf.\n The contract is still open.\nIf
+    you\u2019ve found this\u2014you\u2019re next in line."
+  StoreKnowledgeValue: 8.34

@@ -16,7 +16,7 @@ public class CameraFall : MonoBehaviour
     public float fallAngle = 90f;
 
     [Tooltip("Local Y position (relative to parent) when fully down")]
-    public float fallYPosition = 0.114f;
+    public float fallYPosition = 0.22f;
 
     [Tooltip("Seconds to fall over")]
     public float fallDuration = 0.5f;
@@ -57,7 +57,7 @@ public class CameraFall : MonoBehaviour
         float t = 0f;
         // calculate end states
         Quaternion rotStart = cameraRoot.localRotation;
-        Quaternion rotEnd   = rotStart * Quaternion.Euler(fallAngle, 0f, 0f);
+        Quaternion rotEnd   = rotStart * Quaternion.Euler(0f, 0f, fallAngle);
         Vector3 posStart    = cameraRoot.localPosition;
         Vector3 posEnd      = new Vector3(posStart.x, fallYPosition, posStart.z);
 

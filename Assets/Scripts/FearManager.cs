@@ -73,7 +73,7 @@ public class FearManager : MonoBehaviour
             if (_fallCount >= maxFalls)
             {
                 // Game over logic here
-                UIManager.I.ShowGameOver();
+                FindObjectOfType<GameOverUIManager>()?.ShowGameOver();
             }
             else
             {

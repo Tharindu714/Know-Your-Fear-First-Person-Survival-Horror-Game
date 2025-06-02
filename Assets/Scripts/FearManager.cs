@@ -37,11 +37,11 @@ public class FearManager : MonoBehaviour
 
     void Start()
     {
-        _cameraShake    = Camera.main.GetComponent<CameraShake>();
+        _cameraShake = Camera.main.GetComponent<CameraShake>();
         _effectsManager = FindObjectOfType<FearEffectsManager>();
-        _torchController= FindObjectOfType<TorchController>();
-        _camFall        = FindObjectOfType<CameraFall>();
-        _stagger        = FindObjectOfType<StaggerMovement>();
+        _torchController = FindObjectOfType<TorchController>();
+        _camFall = FindObjectOfType<CameraFall>();
+        _stagger = FindObjectOfType<StaggerMovement>();
     }
 
     /// <summary>
@@ -101,5 +101,21 @@ public class FearManager : MonoBehaviour
         src.loop = true;
         src.spatialBlend = 1f;
         src.Play();
+    }
+    
+    public void NotifyGaze(float amount)
+{
+    // increment fear by amount
+    _jumpscareCount += (int)amount; // example: ramp up jumpscareCount
+    // Or if you have a separate “fear” float, just AddFear(amount)
+}
+
+    public void LoseLife()
+    {
+        // Handle losing a life, e.g. decrement player lives
+        // GameManager.I.DecrementLives();
+        // Reset fear effects if needed
+        _jumpscareCount = 0;
+        // _effectsManager?.ResetEffects();
     }
 }

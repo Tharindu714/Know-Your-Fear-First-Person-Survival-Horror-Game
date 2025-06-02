@@ -20,6 +20,7 @@ public class CandleGhostManager : MonoBehaviour
     public float spawnDistance = 3f;       // distance in front of player
     public float horizontalJitter = 1f;
     public float verticalJitter = 0.5f;
+    public float screamRadius = 20f; // how far the sound reaches
 
     private Transform playerCam;
 
@@ -33,6 +34,26 @@ public class CandleGhostManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(GhostLoop());
+    }
+    
+        private void OnEnable()
+    {
+        Candle.OnCandleLit += HandleCandleLit;
+    }
+    private void OnDisable()
+    {
+        Candle.OnCandleLit -= HandleCandleLit;
+    }
+
+    private void HandleCandleLit()
+    {
+        // Play scream SFX at camera (so player hears it clearly)
+        AudioSource.PlayClipAtPoint(whisperClip, Camera.main.transform.position);
+
+        // Find the monster and force it into chase
+        MonsterController monster = FindObjectOfType<MonsterController>();
+        if (monster != null)
+            monster.ForceChase();
     }
 
     private IEnumerator GhostLoop()
@@ -76,7 +97,7 @@ public class CandleGhostManager : MonoBehaviour
                     + playerCam.up * Random.Range(-verticalJitter, verticalJitter);
 
                 var shadow = Instantiate(shadowPrefab, spawnPos, Quaternion.identity);
-                
+
                 // AFTER instantiating shadow at spawnPos:
                 Vector3 directionToCam = (playerCam.position - spawnPos).normalized;
                 shadow.transform.rotation = Quaternion.LookRotation(directionToCam, Vector3.up);

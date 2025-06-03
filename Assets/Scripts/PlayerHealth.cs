@@ -9,12 +9,15 @@ public class PlayerHealth : MonoBehaviour
     private void Awake()
     {
         currentHealth = maxHealth;
+        UIManager.I?.SetHealth(currentHealth);  // initialize the bar
     }
 
     /// <summary>Call to reduce health by “amount.” Clamps at zero.</summary>
     public void TakeDamage(float amount)
     {
         currentHealth = Mathf.Max(0f, currentHealth - amount);
+        UIManager.I?.SetHealth(currentHealth);
+
         if (currentHealth <= 0f)
             Die(); 
     }
@@ -23,11 +26,11 @@ public class PlayerHealth : MonoBehaviour
     public void Heal(float amount)
     {
         currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        UIManager.I?.SetHealth(currentHealth);
     }
 
     private void Die()
     {
-        // Hand off to GameManager or FearManager to handle lives/loss
-        FearManager.I.LoseLife();  
+        GameManager.I.LoseLife();
     }
 }

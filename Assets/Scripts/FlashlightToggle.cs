@@ -11,9 +11,11 @@ public class FlashlightToggle : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private PlayerInputActions inputActions;
 
+        private bool _permanentlyDisabled = false;
+
     // State
-    private bool flashlightOn = false;
-    private bool flickerAllowed = true;
+    private bool flashlightOn = true;
+    private bool flickerAllowed = false;
     private bool isFlickering = false;
 
     private void Awake()
@@ -25,9 +27,18 @@ public class FlashlightToggle : MonoBehaviour, PlayerInputActions.IPlayerActions
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
 
+
+
+    public void DisableForever()
+    {
+        _permanentlyDisabled = true;
+        flashlight.enabled = false;
+        flickerController.StopFlickering();
+    }
+
     public void OnToggleFlashlight(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
+        if (context.performed && !_permanentlyDisabled) return;
 
         flashlightOn = !flashlightOn;
 
@@ -54,7 +65,7 @@ public class FlashlightToggle : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private void Update()
     {
-        if (flashlightOn && isFlickering && Keyboard.current.gKey.wasPressedThisFrame)
+        if (_permanentlyDisabled) return;
         {
             isFlickering = false;
             flickerAllowed = false;

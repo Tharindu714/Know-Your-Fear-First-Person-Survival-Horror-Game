@@ -30,18 +30,29 @@ public class GameManager : MonoBehaviour
     /// <summary>Call whenever player “dies” (monster attack).</summary>
     public void LoseLife()
     {
+        int prevLives = currentLives;
         currentLives--;
-        if (currentLives == 2)
+
+        // If this was the second “fall,” disable torch:
+        // (maxLives=3, prevLives=2→1 is second fall)
+        if (prevLives - currentLives == 1 && currentLives == maxLives - 2)
         {
-            // Turn mist red on second life
-            var main = mistPS.main;
-            main.startColor = redMistColor;
+            // permanently turn off torch
+            FlashlightToggle ft = FindObjectOfType<FlashlightToggle>();
+            if (ft != null)
+            {
+                ft.DisableForever();
+                VignetteController.I?.FadeInRed(2f);
+
+            }
         }
+
         if (currentLives <= 0)
         {
             GameOver();
         }
     }
+
 
     private void GameOver()
     {

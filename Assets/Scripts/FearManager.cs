@@ -5,8 +5,12 @@ public class FearManager : MonoBehaviour
 {
     public static FearManager I;
 
+    [Header("Fear Settings")]
+    public int breathThreshold = 5;     // when to start heavy breathing
+    public float maxFear = 100f;        // “full fear” on a 0–100 scale
+    public float currentFear = 0f;
+
     [Header("Thresholds")]
-    public int breathThreshold = 5;
     public int shakeThreshold = 8;
     public int blurThreshold = 10;
     public int redThreshold = 12;
@@ -25,7 +29,6 @@ public class FearManager : MonoBehaviour
 
     private CameraShake _cameraShake;
     private FearEffectsManager _effectsManager;
-    private TorchController _torchController;
     private CameraFall _camFall;
     private StaggerMovement _stagger;
 
@@ -39,9 +42,26 @@ public class FearManager : MonoBehaviour
     {
         _cameraShake = Camera.main.GetComponent<CameraShake>();
         _effectsManager = FindObjectOfType<FearEffectsManager>();
-        _torchController = FindObjectOfType<TorchController>();
         _camFall = FindObjectOfType<CameraFall>();
         _stagger = FindObjectOfType<StaggerMovement>();
+
+        UIManager.I?.SetFear(currentFear);
+    }
+
+    /// <summary>Call when any “scary event” happens (candle ghost, monster spawn, gaze).</summary>
+    public void AddFear(float amount)
+    {
+        currentFear = Mathf.Clamp(currentFear + amount, 0f, maxFear);
+        UIManager.I?.SetFear(currentFear);
+
+        // You can do additional checks here, e.g. if (currentFear >= something) → panic
+    }
+
+    /// <summary>Call when you want to reduce fear (e.g. lighting candle).</summary>
+    public void ReduceFear(float amount)
+    {
+        currentFear = Mathf.Clamp(currentFear - amount, 0f, maxFear);
+        UIManager.I?.SetFear(currentFear);
     }
 
     /// <summary>
@@ -79,7 +99,6 @@ public class FearManager : MonoBehaviour
             {
                 // Collapse camera and flicker torch
                 _camFall?.FallDown();
-                _torchController?.FlickerToWhiteThenBack();
                 StartCoroutine(DelayedStagger());
             }
         }
@@ -102,13 +121,13 @@ public class FearManager : MonoBehaviour
         src.spatialBlend = 1f;
         src.Play();
     }
-    
+
     public void NotifyGaze(float amount)
-{
-    // increment fear by amount
-    _jumpscareCount += (int)amount; // example: ramp up jumpscareCount
-    // Or if you have a separate “fear” float, just AddFear(amount)
-}
+    {
+        // increment fear by amount
+        _jumpscareCount += (int)amount; // example: ramp up jumpscareCount
+                                        // Or if you have a separate “fear” float, just AddFear(amount)
+    }
 
     public void LoseLife()
     {

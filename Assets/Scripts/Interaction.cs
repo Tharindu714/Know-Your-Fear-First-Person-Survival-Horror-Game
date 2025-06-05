@@ -72,7 +72,7 @@ public class Interaction : MonoBehaviour
             else Open_box.SetActive(false);
 
             // Candles
-            var candle = hit.collider.GetComponentInParent<CandleLightController>();
+            var candle = hit.collider.GetComponentInParent<CandleController>();
             if (candle != null)
             {
                 candlePrompt.SetActive(true);

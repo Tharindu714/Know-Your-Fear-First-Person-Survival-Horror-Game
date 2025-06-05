@@ -1,50 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
+// File: VignetteController.cs
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class VignetteController : MonoBehaviour
 {
- public static VignetteController I;
+    public static VignetteController Instance;
 
-    private Image _vignetteImage;
-    private bool _isFading = false;
+    [Header("References")]
+    public Image vignetteImage;        // → drag a full-screen UI Image (with a circular black mask) here
 
-    void Awake()
+    [Header("Settings")]
+    public float fadeDuration = 1f;    // time to fade from alpha=0 → alpha=1
+
+    private bool isActive = false;
+
+    private void Awake()
     {
-        if (I == null) I = this;
+        if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
-        _vignetteImage = GetComponent<Image>();
-        if (_vignetteImage == null)
-            Debug.LogError("VignetteController requires an Image component on the same GameObject");
     }
 
-    /// <summary>
-    /// Fade in to full red vignette over duration seconds.
-    /// </summary>
-    public void FadeInRed(float duration = 2f)
+    private void Start()
     {
-        if (_isFading || _vignetteImage == null) return;
-        StartCoroutine(FadeRoutine(0f, 0.4f, duration)); 
-        // 0.7 alpha gives a strong red cast; adjust as desired
+        if (vignetteImage != null)
+        {
+            // Ensure it starts fully transparent
+            Color c = vignetteImage.color;
+            c.a = 0f;
+            vignetteImage.color = c;
+            vignetteImage.enabled = false;
+        }
     }
 
-    private IEnumerator FadeRoutine(float fromAlpha, float toAlpha, float dur)
+    /// <summary>Call this to fade in the vignette (alpha 0 → 1).</summary>
+    public void ActivateVignette()
     {
-        _isFading = true;
+        if (isActive || vignetteImage == null) return;
+        vignetteImage.enabled = true;
+        StartCoroutine(FadeInVignette());
+    }
+
+    private IEnumerator FadeInVignette()
+    {
+        isActive = true;
         float elapsed = 0f;
-        Color col = _vignetteImage.color;
-        while (elapsed < dur)
+        Color startC = vignetteImage.color;
+        Color endC = vignetteImage.color;
+        endC.a = 1f;
+
+        while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / dur);
-            col.a = Mathf.Lerp(fromAlpha, toAlpha, t);
-            _vignetteImage.color = col;
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
+            vignetteImage.color = Color.Lerp(startC, endC, t);
             yield return null;
         }
-        col.a = toAlpha;
-        _vignetteImage.color = col;
-        _isFading = false;
+
+        vignetteImage.color = endC;
     }
 }

@@ -52,6 +52,8 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		public PlayerHealth playerHealth;
+
 		public static FirstPersonController I;
 
 		// Internal state

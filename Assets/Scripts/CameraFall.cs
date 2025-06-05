@@ -1,108 +1,106 @@
-using System.Collections;
 using UnityEngine;
-using StarterAssets;
+using System.Collections;
 
 public class CameraFall : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Reference to the player movement script to disable during fall")]  
-    public FirstPersonController playerController;
+    public Transform playerCamera;         // Drag your Main Camera.transform here
+    public MonoBehaviour playerController; // Drag the script that controls player look (e.g., MouseLook) here
 
-    [Tooltip("The transform you want to tilt (e.g. PlayerCameraRoot)")]
-    public Transform cameraRoot;
+    [Header("Settings")]
+    public float fallDuration = 1.5f;      // How long to animate tilt down or stand up
+    public float tiltAngle = 90f;          // 90° = look straight down
 
-    [Header("Fall Settings")]
-    [Tooltip("How many degrees down to tilt (90 = looking at your feet)")]
-    public float fallAngle = 90f;
+    private Quaternion _originalRotation;
+    private bool _isFalling = false;
 
-    [Tooltip("Local Y position (relative to parent) when fully down")]
-    public float fallYPosition = 0.22f;
-
-    [Tooltip("Seconds to fall over")]
-    public float fallDuration = 0.5f;
-
-    [Header("Stand Settings")]
-    [Tooltip("Seconds to stand back up")]
-    public float standDuration = 0.5f;
-
-    private Vector3   _origLocalPos;
-    private Quaternion _origLocalRot;
+    /// <summary>
+    /// True while the camera is fully “fallen” (tilted down)
+    /// and awaiting a StandUp() call.
+    /// </summary>
     public bool IsDown { get; private set; } = false;
 
-    void Start()
+    private void Start()
     {
-        if (cameraRoot == null) cameraRoot = transform;
-        _origLocalPos = cameraRoot.localPosition;
-        _origLocalRot = cameraRoot.localRotation;
+        if (playerCamera != null)
+            _originalRotation = playerCamera.localRotation;
     }
 
-    /// <summary>Call to collapse the camera to the floor over time.</summary>
-    public void FallDown()
+    /// <summary>
+    /// Begins the “fall” animation: tilts camera downward over fallDuration,
+    /// disables playerController, and finally sets IsDown = true.
+    /// </summary>
+    public void TriggerFall()
     {
-        if (IsDown) return;
-        StopAllCoroutines();
-        StartCoroutine(FallSequence());
-    }
-
-    /// <summary>Call to stand back up from the floor.</summary>
-    public void StandUp()
-    {
-        if (!IsDown) return;
-        StopAllCoroutines();
-        StartCoroutine(RiseSequence());
-    }
-
-    private IEnumerator FallSequence()
-    {
-        float t = 0f;
-        // calculate end states
-        Quaternion rotStart = cameraRoot.localRotation;
-        Quaternion rotEnd   = rotStart * Quaternion.Euler(0f, 0f, fallAngle);
-        Vector3 posStart    = cameraRoot.localPosition;
-        Vector3 posEnd      = new Vector3(posStart.x, fallYPosition, posStart.z);
-
-        // lerp into fall
-        while (t < fallDuration)
+        if (!_isFalling && !_isStandingUp && playerCamera != null)
         {
-            t += Time.deltaTime;
-            float pct = t / fallDuration;
-            cameraRoot.localRotation = Quaternion.Slerp(rotStart, rotEnd, pct);
-            cameraRoot.localPosition = Vector3.Lerp(posStart, posEnd, pct);
-            yield return null;
+            StartCoroutine(FallRoutine());
         }
-        // finalize
-        cameraRoot.localRotation = rotEnd;
-        cameraRoot.localPosition = posEnd;
-        IsDown = true;
+    }
 
-        // disable player controls while down
+    private IEnumerator FallRoutine()
+    {
+        _isFalling = true;
+
+        // Disable player look immediately
         if (playerController != null)
             playerController.enabled = false;
-    }
 
-    private IEnumerator RiseSequence()
-    {
-        float t = 0f;
-        Quaternion rotStart = cameraRoot.localRotation;
-        Quaternion rotEnd   = _origLocalRot;
-        Vector3 posStart    = cameraRoot.localPosition;
-        Vector3 posEnd      = _origLocalPos;
+        float elapsed = 0f;
+        Quaternion startRot = playerCamera.localRotation;
+        Quaternion endRot = startRot * Quaternion.Euler(0f, 0f, tiltAngle);
 
-        while (t < standDuration)
+        while (elapsed < fallDuration)
         {
-            t += Time.deltaTime;
-            float pct = t / standDuration;
-            cameraRoot.localRotation = Quaternion.Slerp(rotStart, rotEnd, pct);
-            cameraRoot.localPosition = Vector3.Lerp(posStart, posEnd, pct);
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / fallDuration);
+            playerCamera.localRotation = Quaternion.Slerp(startRot, endRot, t);
             yield return null;
         }
 
-        cameraRoot.localRotation = rotEnd;
-        cameraRoot.localPosition = posEnd;
+        playerCamera.localRotation = endRot;
+        IsDown = true;
+        _isFalling = false;
+    }
+
+    private bool _isStandingUp = false;
+
+    /// <summary>
+    /// If the camera is down (IsDown == true), begins the “stand up” animation:
+    /// tilts camera back to its original rotation over fallDuration,
+    /// and re-enables playerController when done.
+    /// </summary>
+    public void StandUp()
+    {
+        if (IsDown && !_isStandingUp && playerCamera != null)
+        {
+            StartCoroutine(StandUpRoutine());
+        }
+    }
+
+    private IEnumerator StandUpRoutine()
+    {
+        _isStandingUp = true;
         IsDown = false;
 
-        // re-enable player controls
+        float elapsed = 0f;
+        Quaternion startRot = playerCamera.localRotation;
+        Quaternion endRot = _originalRotation;
+
+        while (elapsed < fallDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / fallDuration);
+            playerCamera.localRotation = Quaternion.Slerp(startRot, endRot, t);
+            yield return null;
+        }
+
+        playerCamera.localRotation = endRot;
+
+        // Re-enable player look
         if (playerController != null)
             playerController.enabled = true;
+
+        _isStandingUp = false;
     }
 }

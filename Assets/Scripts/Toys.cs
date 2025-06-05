@@ -16,9 +16,9 @@ public class Toys : MonoBehaviour
 
     [Header("Flashlight Settings")]
     [SerializeField] private FlashlightToggle flashlightToggle;
-    [SerializeField, Min(1)] private int flickerCount = 5;
-    [SerializeField, Min(0f)] private float flickerMinInterval = 0.05f;
-    [SerializeField, Min(0f)] private float flickerMaxInterval = 0.2f;
+    // [SerializeField, Min(1)] private int flickerCount = 5;
+    // [SerializeField, Min(0f)] private float flickerMinInterval = 0.05f;
+    // [SerializeField, Min(0f)] private float flickerMaxInterval = 0.2f;
 
     [Header("Audio Settings")]
     [SerializeField] private AudioSource audioSource;
@@ -61,7 +61,7 @@ public class Toys : MonoBehaviour
                 AudioManager.I.sfxSource.PlayOneShot(openSfx);
 
             StopAllCoroutines();
-            StartCoroutine(BoxSequence());
+            flashlightToggle.ForceEnable();
             Invoke(nameof(PlayScream), screamDelay);
         }
         else
@@ -82,27 +82,6 @@ public class Toys : MonoBehaviour
                 col.enabled = false;
             gameObject.SetActive(false);
         }
-    }
-
-    private IEnumerator BoxSequence()
-    {
-        // Stop any existing flicker
-        flashlightToggle.StopFlickering();
-
-        // Flicker loop
-        for (int i = 0; i < flickerCount; i++)
-        {
-            flashlightToggle.SetLight(false);
-            yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
-            flashlightToggle.SetLight(true);
-            yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
-        }
-
-        // Ensure steady on
-        flashlightToggle.SetLight(true);
-
-        // Play open sound again if you like
-
     }
 
     private void PlayScream()

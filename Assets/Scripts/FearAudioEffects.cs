@@ -1,39 +1,48 @@
+// File: FearAudioEffects.cs
 using UnityEngine;
 using System.Collections;
 
 public class FearAudioEffects : MonoBehaviour
 {
     [Header("Low-Pass Muffle")]
-    public AudioLowPassFilter lowPass;
-    public float targetCutoff = 800f;     // how muffled
-    public float muffleDuration = 2f;     // seconds to muffle
+    public AudioLowPassFilter lowPassFilter; // → drag the AudioLowPassFilter on this GameObject
+    public float targetCutoff = 800f;        // final low-pass frequency
+    public float muffleDuration = 2f;        // seconds to interpolate cutoff
 
     [Header("Heartbeat")]
-    public AudioSource heartbeatSource;   // loop = true, playOnAwake = false
-    public float heartbeatDelay = 1f;     // when to start
+    public AudioSource heartbeatSource;      // → drag a looping AudioSource with a heartbeat clip (Loop = true, PlayOnAwake = false)
+    public float heartbeatDelay = 1f;        // seconds after muffle finishes before heartbeat
 
+    [HideInInspector] public bool isInvokingMuffle = false;
+
+    /// <summary>Call once when fear or health crosses a threshold. Lowers cutoff, then plays heartbeat.</summary>
     public void TriggerMuffleAndHeartbeat()
     {
-        StartCoroutine(FadeLowPass(lowPass.cutoffFrequency, targetCutoff, muffleDuration));
-        Invoke(nameof(StartHeartbeat), heartbeatDelay);
+        if (isInvokingMuffle) return;
+        if (lowPassFilter == null || heartbeatSource == null) return;
+
+        StartCoroutine(MuffleAndHeartbeatRoutine());
     }
 
-    private IEnumerator FadeLowPass(float from, float to, float dur)
+    private IEnumerator MuffleAndHeartbeatRoutine()
     {
-        float t = 0f;
-        while (t < dur)
+        isInvokingMuffle = true;
+        float originalCutoff = lowPassFilter.cutoffFrequency;
+        float elapsed = 0f;
+
+        // Gradually reduce cutoffFrequency to targetCutoff
+        while (elapsed < muffleDuration)
         {
-            t += Time.deltaTime;
-            lowPass.cutoffFrequency = Mathf.Lerp(from, to, t / dur);
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / muffleDuration);
+            lowPassFilter.cutoffFrequency = Mathf.Lerp(originalCutoff, targetCutoff, t);
             yield return null;
         }
-        lowPass.cutoffFrequency = to;
-    }
+        lowPassFilter.cutoffFrequency = targetCutoff;
 
-    private void StartHeartbeat()
-    {
-        if (heartbeatSource != null && !heartbeatSource.isPlaying)
+        // After a small delay, start the heartbeat loop
+        yield return new WaitForSeconds(heartbeatDelay);
+        if (!heartbeatSource.isPlaying)
             heartbeatSource.Play();
     }
 }
-

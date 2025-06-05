@@ -29,7 +29,7 @@ public class FearEffectsManager : MonoBehaviour
         _vignette.color.value = Color.red;
     }
 
-    public void OnFearUpdated(int currentFearCount)
+    public void OnFearUpdated(float currentFearCount)
     {
         // 1) Blur in
         if (!_blurTriggered && currentFearCount >= blurThreshold)

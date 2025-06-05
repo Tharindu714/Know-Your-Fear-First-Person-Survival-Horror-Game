@@ -9,99 +9,78 @@ public class CandleGhostManager : MonoBehaviour
     public float maxInterval = 30f;
 
     [Header("Candle List (auto-populated)")]
-    private List<CandleLightController> candles = new List<CandleLightController>();
+    private List<CandleController> candles = new List<CandleController>();
 
     [Header("Whisper SFX")]
-    public AudioClip whisperClip;
-    public AudioSource audioSourcePrefab;  // prefab with AudioSource (3D if you like)
+    public AudioClip whisperClip;           // whisper sound (for haunt)
+    public AudioSource audioSourcePrefab;   // prefab containing an AudioSource (3D)
 
     [Header("Shadow Settings")]
-    public GameObject shadowPrefab;        // your shadow?silhouette prefab
-    public float spawnDistance = 3f;       // distance in front of player
-    public float horizontalJitter = 1f;
-    public float verticalJitter = 0.5f;
-    public float screamRadius = 20f; // how far the sound reaches
+    public GameObject shadowPrefab;         // your shadow-silhouette prefab
+    public float spawnDistance = 3f;        // how far in front of the player
+    public float horizontalJitter = 1f;     // small random left/right
+    public float verticalJitter = 0.5f;     // small random up/down
 
     private Transform playerCam;
+    public PlayerHealth playerHealth;       // assign your Player (with PlayerHealth) here
 
     void Awake()
     {
-        // Cache all your candles
-        candles.AddRange(FindObjectsOfType<CandleLightController>());
-        playerCam = Camera.main.transform;
+        // 1) Find every CandleController in the scene
+        candles.AddRange(FindObjectsOfType<CandleController>());
+
+        // 2) Cache main camera’s transform for whisper + shadow
+        if (Camera.main != null)
+            playerCam = Camera.main.transform;
     }
 
     void Start()
     {
         StartCoroutine(GhostLoop());
     }
-    
-        private void OnEnable()
-    {
-        Candle.OnCandleLit += HandleCandleLit;
-    }
-    private void OnDisable()
-    {
-        Candle.OnCandleLit -= HandleCandleLit;
-    }
-
-    private void HandleCandleLit()
-    {
-        // Play scream SFX at camera (so player hears it clearly)
-        AudioSource.PlayClipAtPoint(whisperClip, Camera.main.transform.position);
-
-        // Find the monster and force it into chase
-        MonsterController monster = FindObjectOfType<MonsterController>();
-        if (monster != null)
-            monster.ForceChase();
-    }
 
     private IEnumerator GhostLoop()
     {
         while (true)
         {
-            // 1) Wait a random time
-            yield return new WaitForSeconds(Random.Range(minInterval, maxInterval));
+            // 1) Wait a random interval
+            float delay = Random.Range(minInterval, maxInterval);
+            yield return new WaitForSeconds(delay);
 
-            // 2) Pick a random lit candle
-            var lit = candles.FindAll(c => c.isLit);
-            if (lit.Count == 0)
+            // 2) Gather all currently lit candles
+            var litCandles = candles.FindAll(c => c.isLit);
+            if (litCandles.Count == 0)
                 continue;
 
-            var victim = lit[Random.Range(0, lit.Count)];
+            // 3) Pick one at random & extinguish it
+            CandleController victim = litCandles[Random.Range(0, litCandles.Count)];
+            victim.ToggleCandle(); // extinguishes if currently lit
 
-            // 3) Extinguish it
-            victim.Extinguish();
-
-            // 4) Play whisper at the player
-            if (whisperClip != null && audioSourcePrefab != null)
+            // 4) Play a whisper at the player's position (the haunting event)
+            if (whisperClip != null && audioSourcePrefab != null && playerCam != null)
             {
-                var src = Instantiate(audioSourcePrefab, playerCam.position, Quaternion.identity);
+                AudioSource src = Instantiate(audioSourcePrefab, playerCam.position, Quaternion.identity);
                 src.clip = whisperClip;
+                src.spatialBlend = 1f; // fully 3D
                 src.Play();
                 Destroy(src.gameObject, whisperClip.length + 0.1f);
             }
 
-            // after you Play whisper and Extinguish candle:
-            FearManager.I.NotifyJumpscare();
+            JumpScareManager.Instance.RegisterJumpScare();
 
-            FindObjectOfType<FearEffectsManager>()?.OnFearUpdated(FearManager.I._jumpscareCount);
-
-
-            // 5) Spawn a shadow in front of the player
-            if (shadowPrefab != null)
+            // 6) Spawn a “shadow” silhouette in front of the player
+            if (shadowPrefab != null && playerCam != null)
             {
                 Vector3 spawnPos = playerCam.position
                     + playerCam.forward * spawnDistance
                     + playerCam.right * Random.Range(-horizontalJitter, horizontalJitter)
                     + playerCam.up * Random.Range(-verticalJitter, verticalJitter);
 
-                var shadow = Instantiate(shadowPrefab, spawnPos, Quaternion.identity);
+                GameObject shadow = Instantiate(shadowPrefab, spawnPos, Quaternion.identity);
 
-                // AFTER instantiating shadow at spawnPos:
-                Vector3 directionToCam = (playerCam.position - spawnPos).normalized;
-                shadow.transform.rotation = Quaternion.LookRotation(directionToCam, Vector3.up);
-
+                // Rotate to face the camera
+                Vector3 dirToCam = (playerCam.position - spawnPos).normalized;
+                shadow.transform.rotation = Quaternion.LookRotation(dirToCam, Vector3.up);
             }
         }
     }

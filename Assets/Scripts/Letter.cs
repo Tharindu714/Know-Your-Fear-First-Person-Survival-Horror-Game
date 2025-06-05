@@ -16,9 +16,6 @@ public class Letter : MonoBehaviour
 
     [Header("Flashlight Settings")]
     [SerializeField] private FlashlightToggle flashlightToggle;
-    [SerializeField, Min(1)] private int flickerCount = 5;
-    [SerializeField, Min(0f)] private float flickerMinInterval = 0.05f;
-    [SerializeField, Min(0f)] private float flickerMaxInterval = 0.2f;
 
     [Header("Audio Settings")]
     [SerializeField] private AudioSource audioSource;
@@ -77,18 +74,17 @@ public class Letter : MonoBehaviour
     private IEnumerator LetterSequence()
     {
         // 1) Stop any ongoing flicker logic
-        flashlightToggle.StopFlickering();
 
         // 2) Manual flicker loop
-        for (int i = 0; i < flickerCount; i++)
-        {
-            flashlightToggle.SetLight(false);
-            yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
-            flashlightToggle.SetLight(true);
-            yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
-        }
+        // for (int i = 0; i < flickerCount; i++)
+        // {
+        //     flashlightToggle.SetLight(false);
+        //     yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
+        //     flashlightToggle.SetLight(true);
+        //     yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
+        // }
         // Ensure steady on
-        flashlightToggle.SetLight(true);
+        flashlightToggle.ForceDisable();
 
         // 4) Wait then play scream
         yield return new WaitForSeconds(screamDelay);

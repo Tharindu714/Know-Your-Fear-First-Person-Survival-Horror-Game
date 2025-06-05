@@ -8,6 +8,7 @@ public class GameOverUIManager : MonoBehaviour
 
     [Tooltip("Name of your Menu scene")]
     [SerializeField] private string menuSceneName = "Menu";
+    
 
     /// <summary>
     /// Call this to show the Game Over screen.
@@ -15,14 +16,14 @@ public class GameOverUIManager : MonoBehaviour
     public void ShowGameOver()
     {
         if (gameOverPanel != null)
-            gameOverPanel.SetActive(true);
+        gameOverPanel.SetActive(true);
 
         // Pause the game
         Time.timeScale = 0f;
 
         // Unlock and show the cursor
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible   = true;
+        Cursor.visible = true;
     }
 
     /// <summary>

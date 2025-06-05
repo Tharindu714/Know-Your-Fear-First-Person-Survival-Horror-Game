@@ -75,6 +75,11 @@ public class JumpScareManager : MonoBehaviour
             GameOverUIManager gom = FindObjectOfType<GameOverUIManager>();
             if (gom != null)
                 gom.ShowGameOver();
+
+            // 2) Then immediately disable the Recording UI:
+            RecorderUIController recorder = FindObjectOfType<RecorderUIController>();
+            if (recorder != null && recorder.recordingUIParent != null)
+                recorder.recordingUIParent.SetActive(false);
         }
     }
 

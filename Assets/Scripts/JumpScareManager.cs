@@ -23,7 +23,7 @@ public class JumpScareManager : MonoBehaviour
 
     [Header("Additional Settings")]
     [Tooltip("How much 'fear' to add on each jumpscare")]
-    public float fearPerJumpscare = 10f;
+    public float fearPerJumpscare = 12f;
 
     private int _jumpScareCount = 0;
 

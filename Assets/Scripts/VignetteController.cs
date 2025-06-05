@@ -47,7 +47,7 @@ public class VignetteController : MonoBehaviour
         float elapsed = 0f;
         Color startC = vignetteImage.color;
         Color endC = vignetteImage.color;
-        endC.a = 1f;
+        endC.a = 0.4f;
 
         while (elapsed < fadeDuration)
         {

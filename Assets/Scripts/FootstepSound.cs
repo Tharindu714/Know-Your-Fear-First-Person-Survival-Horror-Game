@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -14,10 +12,13 @@ public class FootstepSound : MonoBehaviour
     public float minMoveSpeed = 0.1f;
 
     private CharacterController cc;
+    private CameraFall camFall;
 
     void Awake()
     {
         cc = GetComponent<CharacterController>();
+        camFall = FindObjectOfType<CameraFall>();
+
         if (footstepSource != null)
         {
             footstepSource.loop = true;
@@ -27,9 +28,17 @@ public class FootstepSound : MonoBehaviour
 
     void Update()
     {
-        if (footstepSource == null) return;
+        if (footstepSource == null || camFall == null) return;
 
-        // only horizontal movement, ignore vertical velocity
+        // If the player is currently “down,” never play footsteps
+        if (camFall.IsDown)
+        {
+            if (footstepSource.isPlaying)
+                footstepSource.Stop();
+            return;
+        }
+
+        // Only horizontal movement, ignore vertical velocity
         Vector3 hVel = new Vector3(cc.velocity.x, 0f, cc.velocity.z);
         bool walking = hVel.magnitude > minMoveSpeed && cc.isGrounded;
 
@@ -39,4 +48,3 @@ public class FootstepSound : MonoBehaviour
             footstepSource.Stop();
     }
 }
-

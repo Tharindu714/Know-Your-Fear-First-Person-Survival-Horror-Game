@@ -10,7 +10,7 @@ public class CandleController : MonoBehaviour
     public PlayerHealth playerHealth; // Drag the Player (with PlayerHealth) here.
 
     [Header("Settings")]
-    public float healPerSecond = 5f;   // How many HP to restore per second while near a lit candle.
+    public float healPerSecond = 1f;   // How many HP to restore per second while near a lit candle.
     public float activationRadius = 2f; // How close the player must be to toggle the candle or be healed.
 
     [HideInInspector]
@@ -87,7 +87,7 @@ public class CandleController : MonoBehaviour
         while (isLit && playerInRange && playerHealth.currentHealth < playerHealth.maxHealth)
         {
             playerHealth.Heal(healPerSecond);
-            playerHealth.DecreaseFear(healPerSecond * 5f); // Optional: decrease fear slightly while healing
+            playerHealth.DecreaseFear(healPerSecond); // Optional: decrease fear slightly while healing
             yield return new WaitForSeconds(1f);
         }
         healCoroutine = null;

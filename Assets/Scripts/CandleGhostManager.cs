@@ -1,6 +1,6 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class CandleGhostManager : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class CandleGhostManager : MonoBehaviour
     public float minInterval = 10f;
     public float maxInterval = 30f;
 
-    [Header("Candle List (auto-populated)")]
+    [Header("Candle List (auto‐populated)")]
     private List<CandleController> candles = new List<CandleController>();
 
     [Header("Whisper SFX")]
@@ -16,7 +16,7 @@ public class CandleGhostManager : MonoBehaviour
     public AudioSource audioSourcePrefab;   // prefab containing an AudioSource (3D)
 
     [Header("Shadow Settings")]
-    public GameObject shadowPrefab;         // your shadow-silhouette prefab
+    public GameObject shadowPrefab;         // your shadow‐silhouette prefab
     public float spawnDistance = 3f;        // how far in front of the player
     public float horizontalJitter = 1f;     // small random left/right
     public float verticalJitter = 0.5f;     // small random up/down
@@ -48,7 +48,7 @@ public class CandleGhostManager : MonoBehaviour
             yield return new WaitForSeconds(delay);
 
             // 2) Gather all currently lit candles
-            var litCandles = candles.FindAll(c => c.isLit);
+            var litCandles = candles.FindAll(c => c != null && c.isLit);
             if (litCandles.Count == 0)
                 continue;
 
@@ -56,7 +56,11 @@ public class CandleGhostManager : MonoBehaviour
             CandleController victim = litCandles[Random.Range(0, litCandles.Count)];
             victim.ToggleCandle(); // extinguishes if currently lit
 
-            // 4) Play a whisper at the player's position (the haunting event)
+            // 4) Remove from our list and destroy the candle GameObject
+            candles.Remove(victim);
+            Destroy(victim.gameObject);
+
+            // 5) Play a whisper at the player's position (the haunting event)
             if (whisperClip != null && audioSourcePrefab != null && playerCam != null)
             {
                 AudioSource src = Instantiate(audioSourcePrefab, playerCam.position, Quaternion.identity);
@@ -66,9 +70,10 @@ public class CandleGhostManager : MonoBehaviour
                 Destroy(src.gameObject, whisperClip.length + 0.1f);
             }
 
+            // 6) Register the jumpscare
             JumpScareManager.Instance.RegisterJumpScare();
 
-            // 6) Spawn a “shadow” silhouette in front of the player
+            // 7) Spawn a “shadow” silhouette in front of the player
             if (shadowPrefab != null && playerCam != null)
             {
                 Vector3 spawnPos = playerCam.position
@@ -85,4 +90,3 @@ public class CandleGhostManager : MonoBehaviour
         }
     }
 }
-

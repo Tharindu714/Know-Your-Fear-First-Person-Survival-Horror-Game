@@ -10402,16 +10402,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fearAudio: {fileID: 1784925324}
-  fearManager: {fileID: 0}
   cameraFall: {fileID: 8338988565591873059}
   vignetteCtrl: {fileID: 876508743}
   flashlightToggle: {fileID: 8338988565591873056}
   mistController: {fileID: 812249760}
   playerHealth: {fileID: 8338988565591873061}
-  heavyBreathingSource: {fileID: 0}
+  heavyBreathingSource: {fileID: 1939817322}
   thresholdOne: 1
   thresholdTwo: 2
   thresholdFinal: 4
+  fearPerJumpscare: 10
 --- !u!4 &1089625174 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3747825365795650869, guid: 74571adb2da8cbd48bea36bf0c035b92,
@@ -17714,7 +17714,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.4
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -18163,7 +18163,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 8432658604276462554, guid: 2f82fa606725e194489ff309a69972bd,
     type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 0a82833bc0ff4a64c917c5b96a4c6db7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -18209,7 +18209,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.81
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -93766,7 +93766,7 @@ PrefabInstance:
         type: 3}
       propertyPath: screamClip
       value: 
-      objectReference: {fileID: 8300000, guid: 3afd8b5d8ab4ef74bbbc81abb105c1bb, type: 3}
+      objectReference: {fileID: 8300000, guid: d8c15da13477f544ba8b2c6f2e9f4b90, type: 3}
     - target: {fileID: 1342130566372384484, guid: 2528b18efdba4b447a7039b50cc9cd60,
         type: 3}
       propertyPath: audioSource
@@ -93775,7 +93775,12 @@ PrefabInstance:
     - target: {fileID: 1342130566372384484, guid: 2528b18efdba4b447a7039b50cc9cd60,
         type: 3}
       propertyPath: screamDelay
-      value: 0.5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1342130566372384484, guid: 2528b18efdba4b447a7039b50cc9cd60,
+        type: 3}
+      propertyPath: paperFoldClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1342130566372384484, guid: 2528b18efdba4b447a7039b50cc9cd60,
         type: 3}
@@ -95319,13 +95324,23 @@ PrefabInstance:
       objectReference: {fileID: 28655838}
     - target: {fileID: 8020110953586204699, guid: 4f9a9f66013fd5444846152c71991567,
         type: 3}
+      propertyPath: screamClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d8c15da13477f544ba8b2c6f2e9f4b90, type: 3}
+    - target: {fileID: 8020110953586204699, guid: 4f9a9f66013fd5444846152c71991567,
+        type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 5885216829670671796}
     - target: {fileID: 8020110953586204699, guid: 4f9a9f66013fd5444846152c71991567,
         type: 3}
       propertyPath: screamDelay
-      value: 0.5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8020110953586204699, guid: 4f9a9f66013fd5444846152c71991567,
+        type: 3}
+      propertyPath: paperFoldClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8020110953586204699, guid: 4f9a9f66013fd5444846152c71991567,
         type: 3}
@@ -95671,7 +95686,7 @@ MonoBehaviour:
   CinemachineCameraTarget: {fileID: 8338988565591873048}
   TopClamp: 89
   BottomClamp: -89
-  playerHealth: {fileID: 0}
+  playerHealth: {fileID: 8338988565591873061}
   IsMakingNoise: 0
   isFainting: 0
 --- !u!143 &4416926083347132233
@@ -97812,13 +97827,23 @@ PrefabInstance:
       objectReference: {fileID: 28655838}
     - target: {fileID: 1173747143642076232, guid: f9996328feb8e554b9375c2d45c15343,
         type: 3}
+      propertyPath: screamClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d8c15da13477f544ba8b2c6f2e9f4b90, type: 3}
+    - target: {fileID: 1173747143642076232, guid: f9996328feb8e554b9375c2d45c15343,
+        type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 5885216829670671796}
     - target: {fileID: 1173747143642076232, guid: f9996328feb8e554b9375c2d45c15343,
         type: 3}
       propertyPath: screamDelay
-      value: 0.5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173747143642076232, guid: f9996328feb8e554b9375c2d45c15343,
+        type: 3}
+      propertyPath: paperFoldClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1173747143642076232, guid: f9996328feb8e554b9375c2d45c15343,
         type: 3}
@@ -98150,13 +98175,23 @@ PrefabInstance:
       objectReference: {fileID: 28655838}
     - target: {fileID: 2364598602254545691, guid: 4073b6d4741583b4e906d4ad87fcb8d8,
         type: 3}
+      propertyPath: screamClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d8c15da13477f544ba8b2c6f2e9f4b90, type: 3}
+    - target: {fileID: 2364598602254545691, guid: 4073b6d4741583b4e906d4ad87fcb8d8,
+        type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 5885216829670671796}
     - target: {fileID: 2364598602254545691, guid: 4073b6d4741583b4e906d4ad87fcb8d8,
         type: 3}
       propertyPath: screamDelay
-      value: 0.5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2364598602254545691, guid: 4073b6d4741583b4e906d4ad87fcb8d8,
+        type: 3}
+      propertyPath: paperFoldClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2364598602254545691, guid: 4073b6d4741583b4e906d4ad87fcb8d8,
         type: 3}
@@ -98471,7 +98506,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -100202,7 +100237,7 @@ PrefabInstance:
         type: 3}
       propertyPath: screamClip
       value: 
-      objectReference: {fileID: 8300000, guid: 84b91ce0f4d86b04ca482bfe92df7358, type: 3}
+      objectReference: {fileID: 8300000, guid: d8c15da13477f544ba8b2c6f2e9f4b90, type: 3}
     - target: {fileID: 6286968308125701626, guid: 95d8113477c428d4f95aec09fa0ec020,
         type: 3}
       propertyPath: audioSource
@@ -100211,13 +100246,13 @@ PrefabInstance:
     - target: {fileID: 6286968308125701626, guid: 95d8113477c428d4f95aec09fa0ec020,
         type: 3}
       propertyPath: screamDelay
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6286968308125701626, guid: 95d8113477c428d4f95aec09fa0ec020,
         type: 3}
       propertyPath: paperFoldClip
       value: 
-      objectReference: {fileID: 8300000, guid: 53d02ec577d6d8f41adc2c21de107d44, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6286968308125701626, guid: 95d8113477c428d4f95aec09fa0ec020,
         type: 3}
       propertyPath: flashlightToggle

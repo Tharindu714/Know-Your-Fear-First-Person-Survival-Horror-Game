@@ -19,6 +19,13 @@ public class FollowingGhost : MonoBehaviour
     [Tooltip("Amount of fear to add to playerHealth on contact.")]
     public float fearOnHit = 20f;
 
+    [Header("Miss Penalty (if never hits)")]
+    [Tooltip("Health penalty to apply if the ghost never hits the player.")]
+    public float missDamage = 5f;
+
+    [Tooltip("Fear penalty to apply if the ghost never hits the player.")]
+    public float missFear = 5f;
+
     [Header("Hit Sound")]
     [Tooltip("A short AudioClip to play when the ghost actually hits the player.")]
     public AudioClip hitClip;
@@ -37,7 +44,8 @@ public class FollowingGhost : MonoBehaviour
         _playerTransform = playerTransform;
         if (_playerTransform != null)
         {
-            _playerHealth = _playerTransform.GetComponent<PlayerHealth>();
+            // If PlayerHealth is on a parent (e.g. CinemachineTarget is child), use GetComponentInParent
+            _playerHealth = _playerTransform.GetComponentInParent<PlayerHealth>();
             if (_playerHealth == null)
                 Debug.LogWarning("FollowingGhost: PlayerHealth not found on player!");
         }
@@ -76,9 +84,15 @@ public class FollowingGhost : MonoBehaviour
             yield return null;
         }
 
-        // If we never hit the player, just destroy ourselves now
+        // If we never hit the player during followDuration:
         if (!_hasHitPlayer)
         {
+            // Apply a small miss penalty to the player
+            if (_playerHealth != null)
+            {
+                _playerHealth.TakeDamage(missDamage);
+                _playerHealth.IncreaseFear(missFear);
+            }
             Destroy(gameObject);
         }
     }
@@ -103,11 +117,14 @@ public class FollowingGhost : MonoBehaviour
             if (_audioSource != null && hitClip != null)
             {
                 _audioSource.Play();
+                // Destroy this ghost shortly after the hit sound finishes
+                float destroyDelay = hitClip.length + 0.1f;
+                Destroy(gameObject, destroyDelay);
             }
-
-            // 3) Destroy this ghost shortly after the hit sound finishes
-            float destroyDelay = (hitClip != null) ? hitClip.length + 0.1f : 0f;
-            Destroy(gameObject, destroyDelay);
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

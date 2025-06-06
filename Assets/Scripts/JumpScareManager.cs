@@ -25,18 +25,21 @@ public class JumpScareManager : MonoBehaviour
     [Tooltip("How much 'fear' to add on each jumpscare")]
     public float fearPerJumpscare = 12f;
 
+    // Internal state:
     private int _jumpScareCount = 0;
-
-    // We only disable candles once in final stage:
     private bool _finalStageTriggered = false;
-
-    // Track whether breathing/heartbeat are currently playing:
     private bool _breathingPlaying = false;
     private bool _heartbeatPlaying = false;
-
-    // Track which jumpscare count actually caused the last trigger, so we don't retrigger on the same count:
     private int _breathTriggeredCount = 0;
     private int _heartTriggeredCount = 0;
+
+    // Fear‐based vignette thresholds:
+    private const float VIGNETTE_ON_FEAR = 80f;   // when fear ≥ 80 → show vignette
+    private const float VIGNETTE_OFF_FEAR = 60f;   // when fear ≤ 60 → hide vignette
+    private const float MAX_FEAR_DEATH = 100f;  // when fear reaches 100 → immediate death
+
+    // Whether we've already forced Game Over via fear
+    private bool _fearKillingStageTriggered = false;
 
     private void Awake()
     {
@@ -52,6 +55,9 @@ public class JumpScareManager : MonoBehaviour
         _jumpScareCount++;
         Debug.Log($"JumpScareManager: jumpScareCount = {_jumpScareCount}");
 
+        // Tell the slider manager about this jumpscare:
+        JumpscareSliderManager.I?.OnJumpScare();
+        
         // 1) Add fear and damage health
         if (playerHealth != null)
         {
@@ -59,27 +65,29 @@ public class JumpScareManager : MonoBehaviour
             playerHealth.DecreaseHealth(fearPerJumpscare);
         }
 
-        // 2) Check for final stage only if we have reached thresholdFinal count
+        // 2) Check for fear‐based immediate death:
+        if (!_fearKillingStageTriggered && playerHealth != null && playerHealth.fear >= MAX_FEAR_DEATH)
+        {
+            // Player has lost all sanity → Game Over:
+            _fearKillingStageTriggered = true;
+            TriggerFearDeath();
+            return; // no further jumpscare logic needed
+        }
+
+        // 3) Check for final stage only if we have reached thresholdFinal count
         if (!_finalStageTriggered && _jumpScareCount >= thresholdFinal)
         {
-            float requiredFearForFinal = thresholdTwo * fearPerJumpscare; // e.g. 5 * 10 = 50
+            float requiredFearForFinal = thresholdTwo * fearPerJumpscare; // e.g. 5 * 12 = 60
             if (playerHealth != null && playerHealth.fear >= requiredFearForFinal)
             {
                 TriggerFinalStage();
             }
         }
 
-        // 3) On 8th jumpscare, game over
+        // 4) On 8th jumpscare, game over
         if (_jumpScareCount >= killsThreshold)
         {
-            GameOverUIManager gom = FindObjectOfType<GameOverUIManager>();
-            if (gom != null)
-                gom.ShowGameOver();
-
-            // 2) Then immediately disable the Recording UI:
-            RecorderUIController recorder = FindObjectOfType<RecorderUIController>();
-            if (recorder != null && recorder.recordingUIParent != null)
-                recorder.recordingUIParent.SetActive(false);
+            TriggerGameOver();
         }
     }
 
@@ -88,12 +96,10 @@ public class JumpScareManager : MonoBehaviour
         if (playerHealth == null) return;
 
         float currentFear = playerHealth.fear;
-        float fearThresholdOne = thresholdOne * fearPerJumpscare;   // e.g. 3 * 10 = 30
-        float fearThresholdTwo = thresholdTwo * fearPerJumpscare;   // e.g. 5 * 10 = 50
+        float fearThresholdOne = thresholdOne * fearPerJumpscare;   // e.g. 3 * 12 = 36
+        float fearThresholdTwo = thresholdTwo * fearPerJumpscare;   // e.g. 5 * 12 = 60
 
-        // —— Handle heavy breathing (thresholdOne) ——
-        // Only start breathing if we've reached at least thresholdOne jumpscares
-        // and we haven't already triggered breathing on this count, and fear ≥ required.
+        // ——— Handle heavy breathing (thresholdOne) ———
         if (_jumpScareCount >= thresholdOne &&
             _jumpScareCount > _breathTriggeredCount &&
             currentFear >= fearThresholdOne)
@@ -105,7 +111,6 @@ public class JumpScareManager : MonoBehaviour
                 _breathTriggeredCount = _jumpScareCount;
             }
         }
-        // If fear ever dips below thresholdOne, stop breathing:
         if (_breathingPlaying && currentFear < fearThresholdOne)
         {
             if (heavyBreathingSource != null)
@@ -113,9 +118,7 @@ public class JumpScareManager : MonoBehaviour
             _breathingPlaying = false;
         }
 
-        // —— Handle heartbeat & muffle (thresholdTwo) ——
-        // Only start heartbeat if we've reached at least thresholdTwo jumpscares
-        // and we haven't already triggered heartbeat on this count, and fear ≥ required.
+        // ——— Handle heartbeat & muffle (thresholdTwo) ———
         if (_jumpScareCount >= thresholdTwo &&
             _jumpScareCount > _heartTriggeredCount &&
             currentFear >= fearThresholdTwo)
@@ -127,7 +130,6 @@ public class JumpScareManager : MonoBehaviour
                 _heartTriggeredCount = _jumpScareCount;
             }
         }
-        // If fear ever dips below thresholdTwo, stop the heartbeat:
         if (_heartbeatPlaying && currentFear < fearThresholdTwo)
         {
             if (fearAudio != null && fearAudio.heartbeatSource != null)
@@ -135,11 +137,65 @@ public class JumpScareManager : MonoBehaviour
             _heartbeatPlaying = false;
         }
 
-        // —— Re-enable flashlight after final stage if fear < 50 ——
+        // ——— Re‐enable flashlight after final stage if fear < 50 ———
         if (_finalStageTriggered && flashlightToggle != null && currentFear < 50f)
         {
             flashlightToggle.ForceEnable();
         }
+
+        // ——— Handle fear‐based vignette (even without a jumpscare) ———
+        if (!_fearKillingStageTriggered)
+        {
+            if (currentFear >= VIGNETTE_ON_FEAR)
+            {
+                // show red vignette
+                if (vignetteCtrl != null)
+                    vignetteCtrl.ActivateVignette();
+            }
+            else if (currentFear <= VIGNETTE_OFF_FEAR)
+            {
+                // hide red vignette
+                if (vignetteCtrl != null)
+                    vignetteCtrl.DeactivateVignette();
+            }
+        }
+
+        // ——— If fear hits 100 outside a jumpscare, kill the player now ———
+        if (!_fearKillingStageTriggered && currentFear >= MAX_FEAR_DEATH)
+        {
+            _fearKillingStageTriggered = true;
+            TriggerFearDeath();
+        }
+    }
+
+    /// <summary>
+    /// Called when fear reaches 100%—forces Game Over.
+    /// </summary>
+    private void TriggerFearDeath()
+    {
+        Debug.Log("Player has lost all sanity—Game Over.");
+        // Show Game Over UI:
+        GameOverUIManager gom = FindObjectOfType<GameOverUIManager>();
+        if (gom != null) gom.ShowGameOver();
+
+        // Also immediately disable recording UI if it’s on:
+        RecorderUIController recorder = FindObjectOfType<RecorderUIController>();
+        if (recorder != null && recorder.recordingUIParent != null)
+            recorder.recordingUIParent.SetActive(false);
+    }
+
+    /// <summary>
+    /// Called when we hit killsThreshold (8) or explicitly from fear death.
+    /// </summary>
+    private void TriggerGameOver()
+    {
+        Debug.Log("8 jumpscares reached—Game Over.");
+        GameOverUIManager gom = FindObjectOfType<GameOverUIManager>();
+        if (gom != null) gom.ShowGameOver();
+
+        RecorderUIController recorder = FindObjectOfType<RecorderUIController>();
+        if (recorder != null && recorder.recordingUIParent != null)
+            recorder.recordingUIParent.SetActive(false);
     }
 
     private void TriggerFinalStage()

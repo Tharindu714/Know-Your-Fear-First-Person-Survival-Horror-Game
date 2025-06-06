@@ -34,12 +34,29 @@ public class VignetteController : MonoBehaviour
     }
 
     /// <summary>Call this to fade in the vignette (alpha 0 → 1).</summary>
-    public void ActivateVignette()
-    {
-        if (isActive || vignetteImage == null) return;
-        vignetteImage.enabled = true;
-        StartCoroutine(FadeInVignette());
-    }
+public void ActivateVignette()
+{
+    if (vignetteImage == null || isActive) 
+        return;
+
+    isActive = true;
+    vignetteImage.enabled = true;
+    StartCoroutine(FadeInVignette());
+}
+
+public void DeactivateVignette()
+{
+    // If it’s already inactive (or the image is missing), do nothing.
+    if (vignetteImage == null || !isActive) 
+        return;
+
+    // Stop any FadeIn coroutine (if it’s running)
+    StopCoroutine(FadeInVignette());
+
+    // Immediately disable the image and clear the flag
+    vignetteImage.enabled = false;
+    isActive = false;
+}
 
     private IEnumerator FadeInVignette()
     {

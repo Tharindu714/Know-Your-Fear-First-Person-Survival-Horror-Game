@@ -784,9 +784,10 @@ GameObject:
   - component: {fileID: 4233802146829352445}
   - component: {fileID: 4233802146829352447}
   - component: {fileID: 7719965666717247721}
+  - component: {fileID: 8645062231277264568}
   m_Layer: 6
   m_Name: Monster
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1063,13 +1064,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ecae4bb934b95408685894fde59ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCameraTransform: {fileID: 0}
+  playerCameraTransform: {fileID: 4416841440748558037}
   monsterAnimator: {fileID: 4233802146829352444}
   hidePositions:
   - {fileID: 0}
   appearDistance: 4
   behindDistance: 2
   timeBeforeDisperse: 0.5
+--- !u!114 &8645062231277264568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891133507291483247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 768ad2f18f3d0e14eaad20f0a8740dd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hidePointsParent: {fileID: 4416841440748558037}
+  hidePositions: []
 --- !u!1 &3911767000918471846
 GameObject:
   m_ObjectHideFlags: 0

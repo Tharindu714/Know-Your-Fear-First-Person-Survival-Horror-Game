@@ -54,6 +54,11 @@ public class CandleGhostManager : MonoBehaviour
 
             // 3) Pick one at random & extinguish it
             CandleController victim = litCandles[Random.Range(0, litCandles.Count)];
+
+            // ← Insert jumpscare cue 2 seconds before:
+            MusicManager.I?.PlayJumpCue();
+            yield return new WaitForSeconds(3f);
+
             victim.ToggleCandle(); // extinguishes if currently lit
 
             // 4) Remove from our list and destroy the candle GameObject

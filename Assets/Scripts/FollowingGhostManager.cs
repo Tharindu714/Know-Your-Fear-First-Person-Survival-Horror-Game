@@ -67,6 +67,10 @@ public class FollowingGhostManager : MonoBehaviour
             // 4) Force the ghost’s Y to exactly 0.054
             Vector3 spawnPos = new Vector3(jittered.x, 0.05400002f, jittered.z);
 
+            MusicManager.I?.PlayJumpCue();
+            yield return new WaitForSeconds(2f);
+
+
             // 5) Instantiate the ghost prefab at spawnPos (not jittered)
             GameObject ghostGO = Instantiate(ghostPrefab, spawnPos, Quaternion.identity);
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class MonsterSpawnManager : MonoBehaviour
 {
-  [Header("Spawn Timing")]
+    [Header("Spawn Timing")]
     [Tooltip("Minimum seconds to wait before spawning the next stalker-ghost.")]
     public float minSpawnInterval = 60f;
 
@@ -60,7 +60,7 @@ public class MonsterSpawnManager : MonoBehaviour
             yield return new WaitForSeconds(delay);
 
             // 2) Calculate a spawn position in front of the player (plus random jitter)
-            Vector3 ahead = _playerTransform.position 
+            Vector3 ahead = _playerTransform.position
                           + (_playerTransform.forward * spawnDistanceAhead);
             Vector3 jittered = ahead
                 + (_playerTransform.right * Random.Range(-horizontalJitter, horizontalJitter))
@@ -68,6 +68,10 @@ public class MonsterSpawnManager : MonoBehaviour
 
             // 3) Force the ghost’s Y to exactly 0.054:
             Vector3 spawnPos = new Vector3(jittered.x, 0.05400002f, jittered.z);
+
+            MusicManager.I?.PlayJumpCue();
+            yield return new WaitForSeconds(2f);
+
 
             // 4) Instantiate the ghost prefab at spawnPos:
             GameObject ghostGO = Instantiate(ghostPrefab, spawnPos, Quaternion.identity);

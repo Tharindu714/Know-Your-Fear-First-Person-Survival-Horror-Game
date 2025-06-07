@@ -73,16 +73,6 @@ public class Letter : MonoBehaviour
 
     private IEnumerator LetterSequence()
     {
-        // 1) Stop any ongoing flicker logic
-
-        // 2) Manual flicker loop
-        // for (int i = 0; i < flickerCount; i++)
-        // {
-        //     flashlightToggle.SetLight(false);
-        //     yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
-        //     flashlightToggle.SetLight(true);
-        //     yield return new WaitForSeconds(Random.Range(flickerMinInterval, flickerMaxInterval));
-        // }
         // Ensure steady on
         flashlightToggle.ForceDisable();
 

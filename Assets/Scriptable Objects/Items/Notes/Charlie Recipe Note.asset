@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
   m_Name: Charlie Recipe Note
   m_EditorClassIdentifier: 
+  itemName: Charlie Recipe Note
+  icon: {fileID: 21300000, guid: 4884d72a5b9d3cf44b1903d68da3abd4, type: 3}
   prefab: {fileID: 2364598602254545694, guid: 4073b6d4741583b4e906d4ad87fcb8d8, type: 3}
   type: 0
   description: "Ingredients:\n \u2013 3 whispers from the throat of a dreamer\n \u2013
-    1 pint of shadow, freshly bled\n \u2013 2 pounds of regret (aged works best)\n
-    \u2013 The final breath of a guest who never left\nSecret Ingredient: Their fear"
+    1 pint of shadow, freshly bled\n \u2013 2 pounds of regret (aged works best)\n\u2013
+    The final breath of a guest who never left\nSecret Ingredient: Their fear"
   StoreKnowledgeValue: 8.34

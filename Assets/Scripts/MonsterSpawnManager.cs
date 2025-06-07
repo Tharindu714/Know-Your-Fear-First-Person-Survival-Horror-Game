@@ -59,6 +59,9 @@ public class MonsterSpawnManager : MonoBehaviour
             float delay = Random.Range(minSpawnInterval, maxSpawnInterval);
             yield return new WaitForSeconds(delay);
 
+            while (Instruction.IsReading)
+                yield return null;
+
             // 2) Calculate a spawn position in front of the player (plus random jitter)
             Vector3 ahead = _playerTransform.position
                           + (_playerTransform.forward * spawnDistanceAhead);

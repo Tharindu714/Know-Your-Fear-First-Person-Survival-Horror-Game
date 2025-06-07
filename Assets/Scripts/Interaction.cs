@@ -17,7 +17,7 @@ public class Interaction : MonoBehaviour
     void Start()
     {
         _cameraFall = FindObjectOfType<CameraFall>();
-        _stagger   = FindObjectOfType<StaggerMovement>();
+        _stagger = FindObjectOfType<StaggerMovement>();
         getUpPrompt.SetActive(false);
     }
 
@@ -48,6 +48,16 @@ public class Interaction : MonoBehaviour
                 Interaction_Text.SetActive(true);
                 if (Keyboard.current.eKey.wasPressedThisFrame)
                     letter.OpenCloseLetter();
+            }
+            else Interaction_Text.SetActive(false);
+
+            // Instructions
+            var Instructions = hit.collider.GetComponent<Instruction>();
+            if (Instructions != null)
+            {
+                Interaction_Text.SetActive(true);
+                if (Keyboard.current.eKey.wasPressedThisFrame)
+                    Instructions.ToggleInstruction();
             }
             else Interaction_Text.SetActive(false);
 

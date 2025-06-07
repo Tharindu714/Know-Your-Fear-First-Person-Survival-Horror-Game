@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
   m_Name: Mary Closet Note
   m_EditorClassIdentifier: 
+  itemName: Mary Closet Note
+  icon: {fileID: 21300000, guid: 89f1d2ed06792804099504cb43449c08, type: 3}
   prefab: {fileID: 1342130566372384481, guid: 2528b18efdba4b447a7039b50cc9cd60, type: 3}
   type: 0
   description: "He said it was rats.\nEvery night, like clockwork, the cries would

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
   m_Name: Cabin Note
   m_EditorClassIdentifier: 
+  itemName: Cabin Note
+  icon: {fileID: 21300000, guid: 8cd33764edecddc4bb0abbd1ccd1c730, type: 3}
   prefab: {fileID: 1173747143642076237, guid: f9996328feb8e554b9375c2d45c15343, type: 3}
   type: 0
   description: "Day 37\n The laughter again.\nIt starts just after sunset\u2014light,

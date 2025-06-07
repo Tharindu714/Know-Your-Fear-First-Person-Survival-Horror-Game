@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
   m_Name: Entrance Letter
   m_EditorClassIdentifier: 
+  itemName: Entrance Letter
+  icon: {fileID: 21300000, guid: 46e4d6499c2d16243be778ce994e7258, type: 3}
   prefab: {fileID: 6286968308125701631, guid: 95d8113477c428d4f95aec09fa0ec020, type: 3}
   type: 0
   description: "Please consider forgiving me... I am loosing it.. we all are.. Please

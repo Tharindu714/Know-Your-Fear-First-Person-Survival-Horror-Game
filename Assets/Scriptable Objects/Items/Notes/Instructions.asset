@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
+  m_Name: Instructions
+  m_EditorClassIdentifier: 
+  itemName: Instructions
+  icon: {fileID: 21300000, guid: 6af53e0d0c6d3aa49868bd7e2580873e, type: 3}
+  prefab: {fileID: 5099555384770663707, guid: fc5b2c084b5e01c41b5b6b3fa361fc63, type: 3}
+  type: 0
+  description: 'W A S D  - Move Directions
+
+    W A S D + Left Shift - Sprint
+
+    Space
+    - Jump
+
+    F Key - Flashlight Toggle (On/ Off)
+
+    R Key - Camera Toggle (On/
+    Off)
+
+    N Key - Night Vision Toggle (On/ Off)
+
+    L Key - Candle Toggle (On/
+    Off)
+
+    O Key - Open Box
+
+    E Key - Interact Letters
+
+    G Key - Interact
+    Toys
+
+    Happy Trails ;>'
+  StoreKnowledgeValue: 0

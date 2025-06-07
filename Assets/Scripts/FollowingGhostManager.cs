@@ -57,6 +57,9 @@ public class FollowingGhostManager : MonoBehaviour
             float delay = Random.Range(minSpawnInterval, maxSpawnInterval);
             yield return new WaitForSeconds(delay);
 
+            while (Instruction.IsReading)
+                yield return null;
+
             // 3) Calculate a spawn position behind the player (plus random jitter)
             Vector3 behind = _playerTransform.position
                            - (_playerTransform.forward * spawnDistanceBehind);

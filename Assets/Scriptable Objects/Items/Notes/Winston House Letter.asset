@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b1d4c0662b1f44985d0e2abca15841, type: 3}
   m_Name: Winston House Letter
   m_EditorClassIdentifier: 
+  itemName: Winston House Letter
+  icon: {fileID: 21300000, guid: 4d47af8d3f4c3f4438cba4526f4c0157, type: 3}
   prefab: {fileID: 8020110953586204702, guid: 4f9a9f66013fd5444846152c71991567, type: 3}
   type: 0
   description: "Payment in full: 12 souls.\n I promised quick returns\u2014no questions
-    asked.\nThey never came back.\nThe first night, I heard them clawing at the windows.\n
-    By the third, the forest whispered their names.\nNow, I see them. Pale. Hollow.
+    asked.\nThey never came back.\nThe first night, I heard them clawing at the windows.\nBy
+    the third, the forest whispered their names.\nNow, I see them. Pale. Hollow.
     Waiting.\nI warned the others, but greed is deaf.\n The contract is still open.\nIf
     you\u2019ve found this\u2014you\u2019re next in line."
   StoreKnowledgeValue: 8.34

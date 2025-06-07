@@ -50,6 +50,9 @@ public class CandleGhostManager : MonoBehaviour
             while (Instruction.IsReading)
                 yield return null;
 
+            while (Letter.IsReading)
+                yield return null;
+
             // 2) Gather all currently lit candles
             var litCandles = candles.FindAll(c => c != null && c.isLit);
             if (litCandles.Count == 0)

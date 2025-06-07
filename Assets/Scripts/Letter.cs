@@ -7,6 +7,8 @@ using TMPro;
 
 public class Letter : MonoBehaviour
 {
+    public static bool IsReading { get; private set; }
+
     [Header("UI & Mesh")]
     [SerializeField] private GameObject letterUI;
     [SerializeField] private Renderer letterMesh;
@@ -45,6 +47,8 @@ public class Letter : MonoBehaviour
 
         // Toggle UI
         _isOpen = !_isOpen;
+        IsReading = _isOpen;
+        
         letterUI.SetActive(_isOpen);
         playerController.enabled = !_isOpen;
         letterMesh.enabled = !_isOpen;

@@ -60,6 +60,9 @@ public class FollowingGhostManager : MonoBehaviour
             while (Instruction.IsReading)
                 yield return null;
 
+            while (Letter.IsReading)
+                yield return null;
+
             // 3) Calculate a spawn position behind the player (plus random jitter)
             Vector3 behind = _playerTransform.position
                            - (_playerTransform.forward * spawnDistanceBehind);

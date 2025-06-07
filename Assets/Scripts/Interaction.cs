@@ -8,6 +8,7 @@ public class Interaction : MonoBehaviour
     public GameObject Interaction_Toys;
     public GameObject Open_box;
     public GameObject candlePrompt;
+    public GameObject Instructions; // New: "[T] Instructions" UI
     public GameObject getUpPrompt; // New: "[E] Get Up" UI
     public LayerMask interactionLayers;
 
@@ -41,6 +42,16 @@ public class Interaction : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward,
             out var hit, interactionDistance, interactionLayers))
         {
+            // Instructions
+            var InstructionsVar = hit.collider.GetComponent<Instruction>();
+            if (InstructionsVar != null)
+            {
+                Instructions.SetActive(true);
+                if (Keyboard.current.tKey.wasPressedThisFrame)
+                    InstructionsVar.ToggleInstruction();
+            }
+            else Instructions.SetActive(false);
+
             // Letters
             var letter = hit.collider.GetComponent<Letter>();
             if (letter != null)
@@ -48,16 +59,6 @@ public class Interaction : MonoBehaviour
                 Interaction_Text.SetActive(true);
                 if (Keyboard.current.eKey.wasPressedThisFrame)
                     letter.OpenCloseLetter();
-            }
-            else Interaction_Text.SetActive(false);
-
-            // Instructions
-            var Instructions = hit.collider.GetComponent<Instruction>();
-            if (Instructions != null)
-            {
-                Interaction_Text.SetActive(true);
-                if (Keyboard.current.eKey.wasPressedThisFrame)
-                    Instructions.ToggleInstruction();
             }
             else Interaction_Text.SetActive(false);
 

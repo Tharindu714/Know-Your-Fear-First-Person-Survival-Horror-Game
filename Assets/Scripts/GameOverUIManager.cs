@@ -3,38 +3,63 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUIManager : MonoBehaviour
 {
-    [Tooltip("Drag the GameOverPanel here (disabled at start)")]
+    [Header("Panels (disable these in Editor)")]
+    [Tooltip("Drag the GameOverPanel here.")]
     [SerializeField] private GameObject gameOverPanel;
 
-    [Tooltip("Name of your Menu scene")]
+    [Tooltip("Drag the WinPanel here.")]
+    [SerializeField] private GameObject winPanel;
+
+    [Header("Scene Names")]
+    [Tooltip("Name of your Main Menu scene.")]
     [SerializeField] private string menuSceneName = "Menu";
-    
+
+    private void Awake()
+    {
+        // Ensure both panels start hidden
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (winPanel      != null) winPanel.SetActive(false);
+    }
 
     /// <summary>
-    /// Call this to show the Game Over screen.
+    /// Call this to show the Game Over screen (loss).
     /// </summary>
     public void ShowGameOver()
     {
         if (gameOverPanel != null)
-        gameOverPanel.SetActive(true);
+            gameOverPanel.SetActive(true);
 
-        // Pause the game
+        PauseAndUnlockCursor();
+    }
+
+    /// <summary>
+    /// Call this to show the Win screen (victory).
+    /// </summary>
+    public void ShowWin()
+    {
+        if (winPanel != null)
+            winPanel.SetActive(true);
+
+        PauseAndUnlockCursor();
+    }
+
+    /// <summary>
+    /// Shared logic for pausing and unlocking the cursor.
+    /// </summary>
+    private void PauseAndUnlockCursor()
+    {
         Time.timeScale = 0f;
-
-        // Unlock and show the cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
     /// <summary>
-    /// Hook this to the “Back to Menu” button inside GameOverPanel.
+    /// Hook this to any “Back to Menu” button inside either panel.
     /// </summary>
     public void OnBackToMenuPressed()
     {
-        // Resume time (important so Menu isn't paused)
+        // Resume time so the menu scene runs normally
         Time.timeScale = 1f;
-
-        // Load the Menu scene
         SceneManager.LoadScene(menuSceneName);
     }
 }

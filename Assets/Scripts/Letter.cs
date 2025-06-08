@@ -73,7 +73,9 @@ public class Letter : MonoBehaviour
             InventoryManager.Instance.AddItem(item);
             _collectedCount++;
             if (countText) countText.text = $"{_collectedCount}/{_totalNotes}";
-            AchievementManager.I.OnLetterCollected();
+
+            if (_collectedCount == _totalNotes)
+                AchievementManager.I.OnLetterCollected();
 
             // Disable interaction and hide the object completely
             GetComponent<Collider>().enabled = false;

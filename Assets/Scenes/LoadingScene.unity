@@ -541,8 +541,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 103, y: 0}
-  m_SizeDelta: {x: 487.17114, y: 403.1156}
+  m_AnchoredPosition: {x: 103, y: 50.388}
+  m_SizeDelta: {x: 675.7637, y: 400.69}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &532630628
 MonoBehaviour:
@@ -1355,8 +1355,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 415.6403, y: 350}
+  m_AnchoredPosition: {x: 0, y: 11.3176}
+  m_SizeDelta: {x: 415.6403, y: 387.8303}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1644496826
 MonoBehaviour:
@@ -1378,23 +1378,29 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'W - Walk Forward
+  m_text: 'F - Toggle Flashlight
 
-    S - Walk Backward
+    R - Toggle Recorder
 
-    A | D - Side Starf Walks
+    N - Toggle NightVision
 
-    Space
-    - Jump
+    C
+    - 180 Spin (When you''re being stalked)
 
-    F - Flashlight ON / OFF
+    L - Toggle candles (Gain Sanity)
 
-    E - Interact
+    E
+    - Interact Letters, Wallpapers
 
-    G - Pickup
+    T - Interact Instructions
 
-    L
-    - Candle Light ON/OFF'
+    G - Take Toys
+    and stuff
+
+
+    Beware from the Stalker -Don''t Loose Sanity
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1421,8 +1427,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 34
+  m_fontSizeBase: 34
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1457,7 +1463,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -130.42856, y: 16.377686, z: -131.3917, w: -16.377655}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1738,6 +1744,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0024414062, y: -135.35}
-  m_SizeDelta: {x: -0.0051, y: -480.38}
+  m_AnchoredPosition: {x: 0.0024414062, y: -189.09192}
+  m_SizeDelta: {x: -0.0051, y: -378.1839}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -26,6 +26,7 @@ public class FollowingGhostManager : MonoBehaviour
 
     [Tooltip("How much random vertical jitter to add to the spawn position.")]
     public float verticalJitter = 1f;
+    public static bool PanicActive { get; private set; }
 
     private Transform _playerTransform;
 
@@ -73,6 +74,8 @@ public class FollowingGhostManager : MonoBehaviour
             // 4) Force the ghost’s Y to exactly 0.054
             Vector3 spawnPos = new Vector3(jittered.x, 0.05400002f, jittered.z);
 
+            PanicActive = true;
+
             MusicManager.I?.PlayJumpCue();
             yield return new WaitForSeconds(2f);
 
@@ -106,6 +109,7 @@ public class FollowingGhostManager : MonoBehaviour
             }
             else
             {
+                PanicActive = false;
                 Debug.LogWarning("Spawned ghostPrefab but no FollowingGhost component was found on it. Destroying.");
                 Destroy(ghostGO);
             }

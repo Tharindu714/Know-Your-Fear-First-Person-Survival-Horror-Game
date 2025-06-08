@@ -13170,6 +13170,7 @@ GameObject:
   - component: {fileID: 5885216829670671797}
   - component: {fileID: 5885216829670671798}
   - component: {fileID: 5885216829670671800}
+  - component: {fileID: 5885216829670671801}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -14483,6 +14484,20 @@ MonoBehaviour:
   currentHealth: 100
   fear: 0
   fearAudio: {fileID: 1784925324}
+--- !u!114 &5885216829670671801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926083347132227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22544ce6fceba5f449b482d381187a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinKey: 99
+  spinDuration: 0.2
 --- !u!33 &5917605351556604690
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -36,6 +36,14 @@ public class RecorderUIController : MonoBehaviour
     private bool _isRecording = false;
     private bool _isNightVisionOn = false;
 
+    public static RecorderUIController Instance;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
     private void Start()
     {
         // Hide the Recording UI at the very beginning
@@ -59,7 +67,7 @@ public class RecorderUIController : MonoBehaviour
     private void Update()
     {
         // 1) Listen for R key to toggle Recording UI on/off
-        if (Input.GetKeyDown(toggleKey))
+        if (!Letter.IsReading && !Instruction.IsReading && Input.GetKeyDown(toggleKey))
         {
             ToggleRecordingUI();
         }

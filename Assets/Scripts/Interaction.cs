@@ -9,6 +9,7 @@ public class Interaction : MonoBehaviour
     public GameObject Open_box;
     public GameObject candlePrompt;
     public GameObject Instructions; // New: "[T] Instructions" UI
+    public GameObject Photointeraction; // New: "[T] Instructions" UI
     public GameObject getUpPrompt; // New: "[E] Get Up" UI
     public LayerMask interactionLayers;
 
@@ -91,10 +92,22 @@ public class Interaction : MonoBehaviour
                     candle.ToggleCandle();
             }
             else candlePrompt.SetActive(false);
+
+            var photo = hit.collider.GetComponentInParent<PhotoInteraction>();
+            if (photo != null)
+            {
+                Photointeraction.SetActive(true);
+                Interaction_Text.SetActive(false);
+                if (Keyboard.current.eKey.wasPressedThisFrame)
+                    photo.Interact();
+            }
+            else Photointeraction.SetActive(false);
         }
         else
         {
             Interaction_Text.SetActive(false);
+            Photointeraction.SetActive(false);
+            Instructions.SetActive(false);
             Interaction_Toys.SetActive(false);
             Open_box.SetActive(false);
             candlePrompt.SetActive(false);

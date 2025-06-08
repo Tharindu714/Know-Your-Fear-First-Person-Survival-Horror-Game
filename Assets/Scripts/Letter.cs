@@ -33,7 +33,7 @@ public class Letter : MonoBehaviour
     private static int _collectedCount = 0;
     private const int _totalNotes = 12;
 
-
+    private bool _canClose = false;
     private bool _isOpen = false;
     private bool _collected = false;
 
@@ -42,20 +42,25 @@ public class Letter : MonoBehaviour
     /// </summary>
     public void OpenCloseLetter()
     {
+        RecorderUIController.Instance?.DisableRecordingUI();
+        
         // If already collected, ignore further interaction
         if (_collected) return;
+
+        if (_isOpen && !_canClose)
+            return;
 
         // Toggle UI
         _isOpen = !_isOpen;
         IsReading = _isOpen;
-        
+
         letterUI.SetActive(_isOpen);
         playerController.enabled = !_isOpen;
         letterMesh.enabled = !_isOpen;
 
         if (_isOpen)
         {
-            // On open: play sound and flicker
+            _canClose = false;
             AudioManager.I.sfxSource.PlayOneShot(paperFoldClip);
 
             StopAllCoroutines();
@@ -84,6 +89,10 @@ public class Letter : MonoBehaviour
         yield return new WaitForSeconds(screamDelay);
         if (screamClip != null)
             AudioManager.I.sfxSource.PlayOneShot(screamClip);
+
+        float clipLength = paperFoldClip != null ? paperFoldClip.length : 0f;
+        yield return new WaitForSeconds(clipLength);
+        _canClose = true;
     }
 }
 

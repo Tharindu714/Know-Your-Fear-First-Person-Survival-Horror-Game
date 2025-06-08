@@ -28,6 +28,8 @@ public class Instruction : MonoBehaviour
     /// </summary>
     public void ToggleInstruction()
     {
+        RecorderUIController.Instance?.DisableRecordingUI();
+        
         _isOpen = !_isOpen;
         IsReading = _isOpen;
 

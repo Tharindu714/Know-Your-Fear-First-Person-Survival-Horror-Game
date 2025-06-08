@@ -12,6 +12,7 @@ TagManager:
   - Candle
   - Monster
   - Instructions
+  - Photo
   layers:
   - Default
   - TransparentFX

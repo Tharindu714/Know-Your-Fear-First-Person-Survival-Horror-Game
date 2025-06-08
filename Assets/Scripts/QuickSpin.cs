@@ -3,19 +3,15 @@ using System.Collections;
 
 public class QuickSpin : MonoBehaviour
 {
-    [Tooltip("Key to perform the quick 180° turn.")]
     public KeyCode spinKey = KeyCode.C;
-
-    [Tooltip("How long the spin animation should take.")]
     public float spinDuration = 0.2f;
 
-    // Are we mid‐spin right now?
     private bool _isSpinning = false;
+    private int  _consecutiveSpins = 0;  // track back-to-back spins
 
     void Update()
     {
-        // If panic is active, not already spinning, and player presses C → start spin
-        if (! _isSpinning 
+        if (!_isSpinning 
          && FollowingGhostManager.PanicActive 
          && Input.GetKeyDown(spinKey))
         {
@@ -27,7 +23,6 @@ public class QuickSpin : MonoBehaviour
     {
         _isSpinning = true;
 
-        // Capture start & target rotations
         Quaternion startRot  = transform.rotation;
         Quaternion targetRot = startRot * Quaternion.Euler(0f, 180f, 0f);
 
@@ -40,8 +35,19 @@ public class QuickSpin : MonoBehaviour
             yield return null;
         }
 
-        // Snap exactly to target
         transform.rotation = targetRot;
         _isSpinning = false;
+
+        // —— NEW: count consecutive spins —— 
+        _consecutiveSpins++;
+
+        if (_consecutiveSpins >= 5)
+        {
+            // after the 5th spin in a row, fire the achievement
+            AchievementManager.I.OnSpin();
+
+            // reset so you need another 5 in a row next time
+            _consecutiveSpins = 0;
+        }
     }
 }

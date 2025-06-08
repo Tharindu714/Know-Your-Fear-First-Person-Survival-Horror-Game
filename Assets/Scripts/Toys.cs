@@ -76,6 +76,7 @@ public class Toys : MonoBehaviour
             _collectedCount++;
             if (countText != null)
                 countText.text = $"{_collectedCount}/{_totalItems}";
+                AchievementManager.I.OnLetterCollected();
 
             // Disable collider & hide the whole box so it can't be reopened
             if (TryGetComponent<Collider>(out var col))

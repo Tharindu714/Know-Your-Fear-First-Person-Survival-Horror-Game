@@ -81,6 +81,7 @@ public class JumpScareManager : MonoBehaviour
             if (playerHealth != null && playerHealth.fear >= requiredFearForFinal)
             {
                 TriggerFinalStage();
+                AchievementManager.I.OnJumpScare();
             }
         }
 

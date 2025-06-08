@@ -43,7 +43,7 @@ public class Letter : MonoBehaviour
     public void OpenCloseLetter()
     {
         RecorderUIController.Instance?.DisableRecordingUI();
-        
+
         // If already collected, ignore further interaction
         if (_collected) return;
 
@@ -73,6 +73,7 @@ public class Letter : MonoBehaviour
             InventoryManager.Instance.AddItem(item);
             _collectedCount++;
             if (countText) countText.text = $"{_collectedCount}/{_totalNotes}";
+            AchievementManager.I.OnLetterCollected();
 
             // Disable interaction and hide the object completely
             GetComponent<Collider>().enabled = false;

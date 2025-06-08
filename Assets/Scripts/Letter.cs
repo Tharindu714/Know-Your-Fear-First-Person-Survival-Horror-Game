@@ -31,7 +31,7 @@ public class Letter : MonoBehaviour
     public ItemObject item;
 
     private static int _collectedCount = 0;
-    private const int _totalNotes = 12;
+    private const int _totalNotes = 15;
 
     private bool _canClose = false;
     private bool _isOpen = false;

@@ -17830,6 +17830,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8406971353133864661, guid: a75cbf587184e1441bb0674091af999e,
         type: 3}
+      propertyPath: m_text
+      value: 0/16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406971353133864661, guid: a75cbf587184e1441bb0674091af999e,
+        type: 3}
       propertyPath: m_fontSize
       value: 50
       objectReference: {fileID: 0}

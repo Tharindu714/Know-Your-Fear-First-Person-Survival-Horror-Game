@@ -6897,9 +6897,9 @@ MonoBehaviour:
   heavyBreathingSource: {fileID: 1939817322}
   thresholdOne: 2
   thresholdTwo: 5
-  thresholdFinal: 6
+  thresholdFinal: 7
   killsThreshold: 8
-  fearPerJumpscare: 10
+  fearPerJumpscare: 8
 --- !u!4 &1089625174 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3747825365795650869, guid: 74571adb2da8cbd48bea36bf0c035b92,

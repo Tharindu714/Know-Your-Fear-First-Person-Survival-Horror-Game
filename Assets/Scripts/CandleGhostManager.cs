@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
 public class CandleGhostManager : MonoBehaviour
 {
     [Header("Timing (between candle hauntings)")]
     public float minInterval = 10f;
     public float maxInterval = 30f;
 
-    [Header("Candle List (auto-populated)")]
+    [Header("Candle List (auto‐populated)")]
     private List<CandleController> candles = new List<CandleController>();
 
     [Header("Whisper SFX")]
@@ -15,16 +16,13 @@ public class CandleGhostManager : MonoBehaviour
     public AudioSource audioSourcePrefab;   // prefab containing an AudioSource (3D)
 
     [Header("Shadow Settings")]
-    public GameObject shadowPrefab;         // your shadow-silhouette prefab
+    public GameObject shadowPrefab;         // your shadow‐silhouette prefab
     public float spawnDistance = 3f;        // how far in front of the player
     public float horizontalJitter = 1f;     // small random left/right
     public float verticalJitter = 0.5f;     // small random up/down
 
     private Transform playerCam;
     public PlayerHealth playerHealth;       // assign your Player (with PlayerHealth) here
-
-    // ───── New flag to ensure we fire only once ─────
-    private bool _firstGhostAchievementFired = false;
 
     void Awake()
     {
@@ -49,9 +47,11 @@ public class CandleGhostManager : MonoBehaviour
             float delay = Random.Range(minInterval, maxInterval);
             yield return new WaitForSeconds(delay);
 
-            // 1a) Pause if player is reading
-            while (Instruction.IsReading) yield return null;
-            while (Letter.IsReading)      yield return null;
+            while (Instruction.IsReading)
+                yield return null;
+
+            while (Letter.IsReading)
+                yield return null;
 
             // 2) Gather all currently lit candles
             var litCandles = candles.FindAll(c => c != null && c.isLit);
@@ -61,7 +61,7 @@ public class CandleGhostManager : MonoBehaviour
             // 3) Pick one at random & extinguish it
             CandleController victim = litCandles[Random.Range(0, litCandles.Count)];
 
-            // ← jumpscare cue 2s before
+            // ← Insert jumpscare cue 2 seconds before:
             MusicManager.I?.PlayJumpCue();
             yield return new WaitForSeconds(3f);
 
@@ -74,11 +74,7 @@ public class CandleGhostManager : MonoBehaviour
             // 5) Play a whisper at the player's position (the haunting event)
             if (whisperClip != null && audioSourcePrefab != null && playerCam != null)
             {
-                AudioSource src = Instantiate(
-                    audioSourcePrefab,
-                    playerCam.position,
-                    Quaternion.identity
-                );
+                AudioSource src = Instantiate(audioSourcePrefab, playerCam.position, Quaternion.identity);
                 src.clip = whisperClip;
                 src.spatialBlend = 1f; // fully 3D
                 src.Play();
@@ -87,13 +83,6 @@ public class CandleGhostManager : MonoBehaviour
 
             // 6) Register the jumpscare
             JumpScareManager.Instance.RegisterJumpScare();
-
-            // ── Only fire the “first candle ghost” achievement once ──
-            if (!_firstGhostAchievementFired)
-            {
-                AchievementManager.I.OnFirstCandleGhost();
-                _firstGhostAchievementFired = true;
-            }
 
             // 7) Spawn a “shadow” silhouette in front of the player
             if (shadowPrefab != null && playerCam != null)

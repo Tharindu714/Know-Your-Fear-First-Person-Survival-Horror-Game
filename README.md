@@ -1,3 +1,5 @@
+![Know Your Fear Main Image](https://github.com/user-attachments/assets/2c4d4908-48c6-4486-a269-ac3a897fe32b)
+
 # 🎮 Know Your Fear: First Person Horror Survival Game
 
 **Version 1.0**
